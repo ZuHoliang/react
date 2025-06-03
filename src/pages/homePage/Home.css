@@ -1,9 +1,72 @@
+/* 整個頁面容器，置頂且置中 */
 .page-container {
-  padding: 24px;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f5f7fa;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
+/* 首頁標題置中且在最上方 */
 .page-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 16px;
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  color: #333;
+  text-align: center;
+}
+
+/* 左右分欄容器 */
+.content-row {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  max-width: 1200px;
+  gap: 4%; /* 間距用百分比 */
+}
+
+/* 公告區與右側面板共用基礎樣式 */
+.page-left-panel,
+.right-panel {
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 2.5%; /* 用百分比padding */
+  flex: 1 1 45%; /* 寬度約佔45% */
+  min-width: 280px; /* 最小寬度避免太窄 */
+}
+
+/* 面板標題 */
+.panel-title {
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+  color: #0056b3;
+}
+
+/* LoginForm 裡標籤與輸入框排版 */
+/* 假設 LoginForm 的 HTML 結構是 label + input */
+.login-form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.login-form-group label {
+  margin-bottom: 6px;
+  font-weight: 600;
+  color: #444;
+}
+
+.login-form-group input {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  transition: border-color 0.3s ease;
+}
+
+.login-form-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 6px #a3c4ff;
 }
