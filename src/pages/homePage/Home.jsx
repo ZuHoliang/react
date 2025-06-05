@@ -90,10 +90,10 @@ const Home = () => {
 
               {(isUser || isAdmin) && (
                 <>
-                  <NavButton to="/schedulePage/Schedule" label="班表" />
+                  <NavButton to="Schedule" label="班表" />
                   <NavButton to="/overtime" label="加班申請" />
                   <NavButton to="/supplement" label="補簽到" />
-                  <NavButton to="/leavePage/Leave" label="請假申請" />
+                  <NavButton to="Leave" label="請假申請" />
                   <NavButton to="/attendance" label="出勤率查詢" />
                   <NavButton to="/account/edit" label="修改個人帳號" />
                 </>
@@ -101,7 +101,7 @@ const Home = () => {
 
               {isAdmin && (
                 <>
-                  <NavButton to="/announcements/manage" label="編輯公告" />
+                  <NavButton to="Announcements" label="編輯公告" />
                   <NavButton to="/account/create" label="修改帳號" />
                   <NavButton to="/attendance/query" label="考勤查詢" />
                 </>

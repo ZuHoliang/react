@@ -1,5 +1,12 @@
+import HomeButton from "../components/HomeButton";
+
 function Leave() {
-  return <h2>請假頁面</h2>
+  return (
+    <div>
+      <h1>請假頁面</h1>
+      <HomeButton />
+    </div>
+  );
 }
 
-export default Leave
+export default Leave;
