@@ -1,4 +1,4 @@
-/* 整個頁面容器，置頂且置中 */
+/* 整體頁面容器 */
 .page-container {
   min-height: 100vh;
   padding: 20px;
@@ -7,9 +7,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  overflow-y: auto;
+  box-sizing: border-box;
+  margin: 0 auto; /* 水平置中 */
 }
 
-/* 首頁標題置中且在最上方 */
+/* 首頁標題 */
 .page-title {
   font-size: 2.5rem;
   margin-bottom: 30px;
@@ -17,56 +20,85 @@
   text-align: center;
 }
 
-/* 左右分欄容器 */
+/* 左右欄排列區塊 */
 .content-row {
   display: flex;
-  justify-content: center;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;  /* 窄螢幕時自動換行 */
+  gap: 32px;
   width: 100%;
   max-width: 1200px;
-  gap: 4%; /* 間距用百分比 */
+  box-sizing: border-box;
 }
 
-/* 公告區與右側面板共用基礎樣式 */
+/* 公告區與登入區塊的共通樣式 */
 .page-left-panel,
 .right-panel {
   background-color: #fff;
   border-radius: 12px;
-  padding: 2.5%; /* 用百分比padding */
-  flex: 1 1 45%; /* 寬度約佔45% */
-  min-width: 280px; /* 最小寬度避免太窄 */
+  padding: 24px;
+  width: 48%;
+  min-width: 300px;
+  box-sizing: border-box;
 }
 
-/* 面板標題 */
+/* 區塊標題 */
 .panel-title {
   font-size: 1.8rem;
   margin-bottom: 20px;
   color: #0056b3;
 }
 
-/* LoginForm 裡標籤與輸入框排版 */
-/* 假設 LoginForm 的 HTML 結構是 label + input */
-.login-form-group {
+/* 公告清單 */
+.announcements-list {
   display: flex;
   flex-direction: column;
-  margin-bottom: 15px;
+  gap: 16px;
 }
 
-.login-form-group label {
-  margin-bottom: 6px;
+.announcement-item h3 {
+  font-size: 1.2rem;
+  margin: 0 0 8px;
+  color: #222;
+}
+
+.announcement-item p {
+  margin: 0 0 4px;
+  color: #555;
+}
+
+.announcement-item small {
+  color: #888;
+}
+
+/* 登出按鈕 */
+.logout-button {
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #dc3545;
+  color: white;
   font-weight: 600;
-  color: #444;
-}
-
-.login-form-group input {
-  padding: 10px 12px;
-  font-size: 1rem;
-  border: 1.5px solid #ccc;
+  border: none;
   border-radius: 6px;
-  transition: border-color 0.3s ease;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
-.login-form-group input:focus {
-  outline: none;
-  border-color: #007bff;
-  box-shadow: 0 0 6px #a3c4ff;
+.logout-button:hover {
+  background-color: #b02a37;
+}
+
+/* 響應式設計：手機裝置下直排 */
+@media (max-width: 768px) {
+  .content-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .page-left-panel,
+  .right-panel {
+    width: 90%;
+  }
 }

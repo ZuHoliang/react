@@ -1,20 +1,78 @@
-.nav-button {
-  display: block;
+/* 登入表單容器 */
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   width: 100%;
-  padding: 10px 16px;
-  margin-bottom: 12px; /* 控制按鈕間距 */
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  background-color: #fff;
-  text-align: center;
-  font-weight: 500;
-  color: #333;
-  text-decoration: none;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  max-width: 100%;
 }
 
-.nav-button:hover {
- background-color: #0056b3;
-  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.2);
+/* 表單每一組輸入欄位 */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1.5px solid #ccc;
+  border-radius: 6px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.3s ease;
+}
+
+.login-form input[type="text"]:focus,
+.login-form input[type="password"]:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 6px #a3c4ff;
+}
+
+/* 登入按鈕 */
+.login-form button {
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  font-weight: 700;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.login-form button:hover {
+  background-color: #0056b3;
+}
+
+/* Checkbox 區 */
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkbox-row label {
+  user-select: none;
+}
+
+/* 登入錯誤/成功訊息樣式 */
+.message {
+  padding: 10px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #842029;
+}
+
+.message.success {
+  background-color: #d1e7dd;
+  color: #0f5132;
 }
