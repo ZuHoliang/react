@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../contexts/AuthContext";
 import NavButton from "../../components/NavButton";
-import LoginForm from "../../components/LoginForm";
+import LoginForm from "../../forms/LoginForm";
 import LatestAnnouncements from "../../components/LatestAnnouncements";
 import "./Home.css";
 
@@ -47,8 +47,8 @@ const Home = () => {
 
               {isAdmin && (
                 <>
-                  <NavButton to="/snnouncements" label="編輯公告" />
-                  <NavButton to="/manageAccount" label="管理員工" />
+                  <NavButton to="/announcements" label="編輯公告" />
+                  <NavButton to="/manageaccount" label="管理員工" />
                 </>
               )}
 
