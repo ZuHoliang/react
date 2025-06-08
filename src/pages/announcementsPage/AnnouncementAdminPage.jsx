@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import AnnouncementForm from "./forms/AnnouncementForm";
+import AnnouncementForm from "../../forms/AnnouncementForm";
 import "./AnnouncementAdminPage.css";
 
 const API_BASE = "http://localhost:8088/api/announcements";

@@ -6,9 +6,9 @@ import Home from "../pages/homePage/Home";
 {
   /* 公告區 */
 }
-import Announcements from "../pages/Announcements";
-import AnnouncementDetailPage from "../pages/AnnouncementDetailPage";
-import AnnouncementAdminPage from "../pages/AnnouncementAdminPage";
+import Announcements from "../pages/announcementsPage/Announcements";
+import AnnouncementDetailPage from "../pages/announcementsPage/AnnouncementDetailPage";
+import AnnouncementAdminPage from "../pages/announcementsPage/AnnouncementAdminPage";
 {
   /* 個人資料 */
 }

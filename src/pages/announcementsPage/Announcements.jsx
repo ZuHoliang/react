@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import AnnouncementSearchForm from "../forms/AnnouncementSearchForm";
-import AnnouncementCard from "../contexts/AnnouncementCard";
+import AnnouncementSearchForm from "../../forms/AnnouncementSearchForm";
+import AnnouncementCard from "../../contexts/AnnouncementCard";
 import HomeButton from "../../components/HomeButton";
 import "./Announcements.css";
 

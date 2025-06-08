@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import "./AnnouncementAdminPage.css";
+import "./AnnouncementDetailPage.css";
 
 const API_BASE = "http://localhost:8088/api/announcements";
 

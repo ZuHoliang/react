@@ -16,7 +16,7 @@ const Schedule = () => {
       {/* 識別權限 */}
       {isAdmin && (
         <div className="">
-          <NavButton to="/schedulePage/Schedule/edit" label="調整班表" />
+          <NavButton to="/schedule" label="調整班表" />
           <Calendar />
         </div>
       )}

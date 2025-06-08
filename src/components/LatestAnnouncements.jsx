@@ -40,7 +40,7 @@ const LatestAnnouncements = () => {
       <div className="panel-header">
         <button
           className="announcement-title-button"
-          onClick={() => navigate("/announcement")}
+          onClick={() => navigate("/announcements")}
         >
           最新公告
         </button>
@@ -55,9 +55,7 @@ const LatestAnnouncements = () => {
             {announcements.map((item) => (
               <li
                 key={item.announcementId}
-                onClick={() =>
-                  navigate(`/announcements/${item.announcementId}`)
-                }
+                onClick={() => navigate(`/announcement/${item.announcementId}`)}
               >
                 <strong>{item.title}</strong>
                 <br />
