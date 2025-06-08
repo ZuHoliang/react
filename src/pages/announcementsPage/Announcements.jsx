@@ -31,11 +31,17 @@ const Announcements = () => {
   }, []);
 
   const handleSearch = (keyword, startDate, endDate) => {
-    const query = `?keyword= 
-                ${encodeURIComponent(keyword)}&
-                startDate=${startDate}
-                &endDate=${endDate}`;
-    fetchAnnouncements(`/search${query}`);
+    const params = new URLSearchParams({
+      keyword,
+      startDate,
+      endDate,
+    });
+    fetchAnnouncements(`/search?${params.toString()}`);
+    // const query = `?keyword=
+    //             ${encodeURIComponent(keyword)}&
+    //             startDate=${startDate}
+    //             &endDate=${endDate}`;
+    // fetchAnnouncements(`/search${query}`);
   };
 
   return (

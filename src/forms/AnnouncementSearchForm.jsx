@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-const AnnouncementForm = ({ onSearch }) => {
+const AnnouncementSearchForm = ({ onSearch }) => {
   const [keyword, setKeyword] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
@@ -57,4 +57,4 @@ const AnnouncementForm = ({ onSearch }) => {
     </form>
   );
 };
-export default AnnouncementForm;
+export default AnnouncementSearchForm;
