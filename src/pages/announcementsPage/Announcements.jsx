@@ -49,7 +49,7 @@ const [isCreating, setIsCreating] = useState(false);
       startDate,
       endDate,
     });
-    fetchAnnouncements(`search?${params.toString()}`);
+    fetchAnnouncements(`/search?${params.toString()}`);
   };
 
   //編輯

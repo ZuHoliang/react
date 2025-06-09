@@ -1,17 +1,12 @@
 import React, { useState, useEffect } from "react";
 import "./AnnouncementForm.css";
 
-const AnnouncementForm = ({ initialData = {}, onSubmit, mode = "create" }) => {
+const AnnouncementForm = (props) => {
+  // 【修改】確保 initialData 不會是 null 或 undefined
+  const initialData = props.initialData ?? {};
   const [title, setTitle] = useState(initialData.title || "");
   const [content, setContent] = useState(initialData.content || "");
   const [active, setActive] = useState(initialData.announcementActive ?? true);
-
-  // 好像不需要?先留著
-  useEffect(() => {
-    setTitle(initialData.title || "");
-    setContent(initialData.content || "");
-    setActive(initialData.announcementActive ?? true);
-  }, [initialData]);
 
   const handleSubmit = (e) => {
     e.preventDefault();

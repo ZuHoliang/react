@@ -27,11 +27,7 @@ const LoginForm = () => {
     }
 
     const result = await login(account, password, rememberMe);
-    console.log("login result:", result);
-    console.log("result.success ===", result.success);
-    console.log("typeof result.success:", typeof result.success);
-
-    if (result.status !== 200) {
+    if (result.success) {
       
       if (result.errorCode === "LOGIN_ACCOUNT_NOT_FOUND") {
         setAccountError("*查無使用者");
@@ -40,8 +36,7 @@ const LoginForm = () => {
       } else {
         setMessage(result.message || "登入失敗");
       }
-    } 
-    else {
+    } else {
   setMessage(result.message || "登入成功");
 }
   };
