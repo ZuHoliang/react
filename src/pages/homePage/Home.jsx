@@ -11,8 +11,8 @@ const Home = () => {
   const { user, loading, logout } = useContext(AuthContext);
 
   // 判斷用戶權限
-  const isAdmin = user?.role == 2; //role=2 是 ADMIN
-  const isUser = user?.role == 1 || user?.role == 2; // role=1 是 USER，role=2 是 ADMIN
+  const isAdmin = user?.role === 2; //role=2 是 ADMIN
+  const isUser = user?.role === 1 || user?.role === 2; // role=1 是 USER，role=2 是 ADMIN
 
   if (loading) {
     return <div className="loading">載入中...</div>;

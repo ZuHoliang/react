@@ -12,7 +12,7 @@ const API_BASE = "http://localhost:8088/api/announcements";
 
 const Announcements = () => {
   const {user} = useContext(AuthContext);
-  const isAdmin = user?.role ===2;
+  const isAdmin = user?.role === 2;
 
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(false);

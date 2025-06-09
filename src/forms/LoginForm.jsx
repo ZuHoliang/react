@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState,useEffect, useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
 import "./LoginForm.css";
 
@@ -11,28 +11,39 @@ const LoginForm = () => {
   const [accountError, setAccountError] = useState("");
   const [passwordError, setPasswordError] = useState("");
 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
     setAccountError("");
     setPasswordError("");
+    
 
     if (!account || !password) {
+      if (!account) setAccountError("*請輸入帳號");
+     if (!password) setPasswordError("*請輸入密碼");
       setMessage("請輸入帳號和密碼");
       return;
     }
 
-    const result = await login(account, password, rememberMe); //登入
-    if (!result.success) {
-      const msg = result.message || "";
-      if (msg.includes("帳號錯誤")) {
+    const result = await login(account, password, rememberMe);
+    console.log("login result:", result);
+    console.log("result.success ===", result.success);
+    console.log("typeof result.success:", typeof result.success);
+
+    if (result.status !== 200) {
+      
+      if (result.errorCode === "LOGIN_ACCOUNT_NOT_FOUND") {
         setAccountError("*查無使用者");
-      } else if (msg.includes("密碼錯誤")) {
+      } else if (result.errorCode === "LOGIN_PASSWORD_INVALID") {
         setPasswordError("*密碼錯誤");
       } else {
-        setMessage(msg);
+        setMessage(result.message || "登入失敗");
       }
-    }
+    } 
+    else {
+  setMessage(result.message || "登入成功");
+}
   };
 
   return (
@@ -48,34 +59,28 @@ const LoginForm = () => {
       )}
 
       <div className="form-group">
-        <label htmlFor="account">
-          帳號:{""}
-          {accountError && <span className="field-error">{accountError}</span>}
-        </label>
-        <input
-          type="text"
-          id="account"
-          value={account}
-          onChange={(e) => setAccount(e.target.value)}
-          disabled={loading}
-        />
-      </div>
+  <label htmlFor="account">帳號:</label>
+  <input
+    type="text"
+    id="account"
+    value={account}
+    onChange={(e) => setAccount(e.target.value)}
+    disabled={loading}
+  />
+  {accountError && <div className="field-error">{accountError}</div>}
+</div>
 
-      <div className="form-group">
-        <label htmlFor="password">
-          密碼:{""}
-          {passwordError && (
-            <span className="field-error">{passwordError}</span>
-          )}
-        </label>
-        <input
-          type="password"
-          id="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={loading}
-        />
-      </div>
+<div className="form-group">
+  <label htmlFor="password">密碼:</label>
+  <input
+    type="password"
+    id="password"
+    value={password}
+    onChange={(e) => setPassword(e.target.value)}
+    disabled={loading}
+  />
+  {passwordError &&<div className="field-error">{passwordError}</div>}
+</div>
 
       <div className="checkbox-row">
         <input

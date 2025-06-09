@@ -20,7 +20,7 @@ const ManageAccount = () => {
     username: "",
     password: "",
     confirmPassword: "",
-    role: false, //true = admin(2)
+    isAdmin: false, //true = admin(2)
     active: true,
   });
 
@@ -146,7 +146,7 @@ const ManageAccount = () => {
         body: JSON.stringify({
           username: newUser.username,
           password: newUser.password,
-          role: newUser.role ? 2 : 1,
+          isAdmin: newUser.role ? 2 : 1,
           active: newUser.active,
         }),
       });
@@ -157,7 +157,7 @@ const ManageAccount = () => {
         username: "",
         password: "",
         confirmPassword: "",
-        role: false,
+        isAdmin: false,
         active: true,
       });
     } catch (err) {
@@ -336,9 +336,9 @@ const ManageAccount = () => {
                 <label>
                   <input
                     type="checkbox"
-                    checked={newUser.role}
+                    checked={newUser.isAdmin}
                     onChange={(e) =>
-                      setNewUser({ ...newUser, role: e.target.checked })
+                      setNewUser({ ...newUser, isAdmin: e.target.checked })
                     }
                   />
                   管理者
