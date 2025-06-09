@@ -3,11 +3,7 @@ import { useParams } from "react-router-dom";
 import "./AnnouncementDetailPage.css";
 
 const API_BASE = "http://localhost:8088/api/announcements";
-<<<<<<< HEAD
 // 指定公告頁面
-=======
-
->>>>>>> 1c1a4b8beb1bfdfd76f9905e98cee45ad8a9f955
 const AnnouncementDetailPage = () => {
   const { id } = useParams();
   const [announcement, setAnnouncement] = useState(null);

@@ -137,3 +137,11 @@ const resetForm=()=>{
                 </div>               
             )}
             </div>
+ ))
+      )}
+      <HomeButton />
+    </div>
+  );
+};
+
+export default Announcements;
