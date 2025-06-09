@@ -1,8 +1,8 @@
-<<<<<<< HEAD
 import React, { useState, useEffect,useContext } from "react";
 import AnnouncementSearchForm from "../../forms/AnnouncementSearchForm";
 import AnnouncementCard from "../../contexts/AnnouncementCard";
-import HomeButton from "../../components/HomeButton";import AnnouncementForm from "../../forms/AnnouncementForm";
+import HomeButton from "../../components/HomeButton";
+import AnnouncementForm from "../../forms/AnnouncementForm";
 // import AnnouncementForm from "../../forms/AnnouncementForm";
 // import { AuthContext } from "../../contexts/AuthContext";
 import "./Announcements.css";
@@ -19,36 +19,16 @@ const Announcements = () => {
   const [editId, setEditId] = useState(null);
   const [editingData, setEditingData] = useState(null);
 const [isCreating, setIsCreating] = useState(false);
-=======
-import React, { useState, useEffect } from "react";
-import AnnouncementSearchForm from "../../forms/AnnouncementSearchForm";
-import AnnouncementCard from "../../contexts/AnnouncementCard";
-import HomeButton from "../../components/HomeButton";
-import "./Announcements.css";
-
-const API_BASE = "http://localhost:8088/api";
-
-const Announcements = () => {
-  const [announcements, setAnnouncements] = useState([]);
-  const [loading, setLoading] = useState(false);
->>>>>>> 1c1a4b8beb1bfdfd76f9905e98cee45ad8a9f955
 
   const fetchAnnouncements = async (query = "") => {
     try {
       setLoading(true);
-<<<<<<< HEAD
       const url = query ? `${API_BASE}${query}` : API_BASE;
       const res = await fetch(url, {
         method: "GET",
         credentials: "include",
       });
       if (!res.ok) throw new Error("載入失敗");
-=======
-      const res = await fetch(`${API_BASE}/announcements${query}`, {
-        method: "GET",
-        credentials: "include",
-      });
->>>>>>> 1c1a4b8beb1bfdfd76f9905e98cee45ad8a9f955
       const data = await res.json();
       setAnnouncements(data);
     } catch (err) {
@@ -62,17 +42,13 @@ const Announcements = () => {
     fetchAnnouncements();
   }, []);
 
-<<<<<<< HEAD
   //搜尋
-=======
->>>>>>> 1c1a4b8beb1bfdfd76f9905e98cee45ad8a9f955
   const handleSearch = (keyword, startDate, endDate) => {
     const params = new URLSearchParams({
       keyword,
       startDate,
       endDate,
     });
-<<<<<<< HEAD
     fetchAnnouncements(`search?${params.toString()}`);
   };
 
@@ -136,21 +112,10 @@ const resetForm=()=>{
   setIsCreating(false);
 };
 
-=======
-    fetchAnnouncements(`/search?${params.toString()}`);
-    // const query = `?keyword=
-    //             ${encodeURIComponent(keyword)}&
-    //             startDate=${startDate}
-    //             &endDate=${endDate}`;
-    // fetchAnnouncements(`/search${query}`);
-  };
-
->>>>>>> 1c1a4b8beb1bfdfd76f9905e98cee45ad8a9f955
   return (
     <div className="announcement-page">
       <h2>公告頁面</h2>
       <AnnouncementSearchForm onSearch={handleSearch} />
-<<<<<<< HEAD
       {isAdmin && !isCreating && !editId &&(
         <button onClick={()=>setIsCreating(true)}>新增公告</button>
       )}
@@ -159,13 +124,10 @@ const resetForm=()=>{
         mode={editId ? "edit":"create"}
         onSubmit={handleFormSubmit}/>
       )}
-=======
->>>>>>> 1c1a4b8beb1bfdfd76f9905e98cee45ad8a9f955
       {loading ? (
         <p>載入中...</p>
       ) : (
         announcements.map((a) => (
-<<<<<<< HEAD
           <div key={a.announcementId}>
             <AnnouncementCard announcement={a} />
             {isAdmin && (
@@ -175,14 +137,3 @@ const resetForm=()=>{
                 </div>               
             )}
             </div>
-=======
-          <AnnouncementCard key={a.announcementId} announcement={a} />
->>>>>>> 1c1a4b8beb1bfdfd76f9905e98cee45ad8a9f955
-        ))
-      )}
-      <HomeButton />
-    </div>
-  );
-};
-
-export default Announcements;
