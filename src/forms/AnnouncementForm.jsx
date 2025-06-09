@@ -1,20 +1,24 @@
 import React, { useState, useEffect } from "react";
 import "./AnnouncementForm.css";
 
-const AnnouncementForm = (props) => {
-  // 【修改】確保 initialData 不會是 null 或 undefined
-  const initialData = props.initialData ?? {};
-  const [title, setTitle] = useState(initialData.title || "");
-  const [content, setContent] = useState(initialData.content || "");
-  const [active, setActive] = useState(initialData.announcementActive ?? true);
-
-  const handleSubmit = (e) => {
+const AnnouncementForm = ({ initialData, onSubmit, mode }) => {
+  const data = initialData || {};
+  const [title, setTitle] = useState(data.title || "");
+  const [content, setContent] = useState(data.content || "");
+  const [active, setActive] = useState(
+    data.announcementActive === undefined ? true : data.announcementActive
+  );
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (title.trim().length < 3) {
       alert("標題至少需要 3 個字");
       return;
     }
-    onSubmit({ title, content, announcementActive: active });
+    await onSubmit({
+      title,
+      content,
+      announcementActive: active,
+    });
   };
   return (
     <form className="announcement-form" onSubmit={handleSubmit}>

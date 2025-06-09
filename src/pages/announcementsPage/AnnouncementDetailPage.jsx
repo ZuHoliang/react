@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import "./AnnouncementDetailPage.css";
+import HomeButton from "../../components/HomeButton";
 
 const API_BASE = "http://localhost:8088/api/announcements";
 // 指定公告頁面
@@ -37,8 +38,10 @@ const AnnouncementDetailPage = () => {
       </p>
       <p>
         <strong>發布時間:</strong>
+        {new Date(announcement.createdTime).toLocaleString()}
       </p>
       <div className="content">{announcement.content}</div>
+      <HomeButton />
     </div>
   );
 };

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import AnnouncementForm from "../../forms/AnnouncementForm";
+import AnnouncementSearchForm from "../../forms/AnnouncementSearchForm";
+import HomeButton from "../../components/HomeButton";
 import "./AnnouncementAdminPage.css";
+import "../../forms/AnnouncementSearchForm.css";
 
 const API_BASE = "http://localhost:8088/api/announcements";
 
@@ -10,20 +13,31 @@ const AnnouncementAdminPage = () => {
   const [editingData, setEditingData] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
 
+  const fetchAnnouncements = async (query = "") => {
+    try {
+      const url = query ? `${API_BASE}${query}` : API_BASE;
+      const res = await fetch(url, {
+        method: "GET",
+        credentials: "include",
+      });
+      if (!res.ok) throw new Error("載入失敗");
+      const data = await res.json();
+      setAnnouncements(data);
+    } catch (err) {
+      console.error("公告載入錯誤：", err);
+      alert("無法載入公告資料");
+    }
+  };
+
   useEffect(() => {
-    const fetchAnnouncements = async () => {
-      try {
-        const res = await fetch(`${API_BASE}`);
-        if (!res.ok) throw new Error("載入失敗");
-        const data = await res.json();
-        setAnnouncements(data);
-      } catch (err) {
-        console.error("公告載入錯誤：", err);
-        alert("無法載入公告資料");
-      }
-    };
     fetchAnnouncements();
   }, []);
+
+  // 搜尋公告
+  const handleSearch = (keyword, startDate, endDate) => {
+    const params = new URLSearchParams({ keyword, startDate, endDate });
+    return fetchAnnouncements(`/search?${params.toString()}`);
+  };
 
   //編輯公告
   const handleEdit = (item) => {
@@ -42,8 +56,10 @@ const AnnouncementAdminPage = () => {
         });
 
         if (!res.ok) throw new Error("刪除失敗");
+        alert("公告刪除成功");
+        window.location.reload();
 
-        setAnnouncements((prev) => prev.filter((a) => a.announcementId !== id));
+        await fetchAnnouncements();
       } catch (err) {
         console.error("刪除公告失敗：", err);
         alert("刪除公告時發生錯誤");
@@ -53,7 +69,7 @@ const AnnouncementAdminPage = () => {
 
   //新增或編輯送出
   const handleFormSubmit = async (data) => {
-    const url = editId ? `${API_BASE}/admin/${editId}` : `${API_BASE}/admin/`;
+    const url = editId ? `${API_BASE}/admin/${editId}` : `${API_BASE}/admin`;
     const method = editId ? "PUT" : "POST";
 
     try {
@@ -61,24 +77,36 @@ const AnnouncementAdminPage = () => {
         method,
         credentials: "include",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify({ title: data.title, content: data.content }),
       });
 
       if (!response.ok) {
         throw new Error("伺服器錯誤!");
       }
 
-      const newItem = await response.json();
+      await fetchAnnouncements();
 
-      if (editId) {
-        setAnnouncements((prev) =>
-          prev.map((a) =>
-            a.announcementId === newItem.announcementId ? newItem : a
-          )
+      let newItem = await response.json();
+
+      //更新公告
+      if (
+        editId &&
+        editingData &&
+        editingData.announcementActive !== data.announcementActive
+      ) {
+        const activeChage = await fetch(
+          `${API_BASE}/admin/${editId}/active?active=${data.announcementActive}`,
+          {
+            method: "PUT",
+            credentials: "include",
+          }
         );
-      } else {
-        setAnnouncements((prev) => [newItem, ...prev]);
+        if (!activeChage.ok) throw new Error("更新公告失敗");
+        newItem = await activeChage.json();
       }
+
+      alert(`公告已成功${editId ? "編輯" : "新增"}`);
+      window.location.reload();
 
       resetForm();
     } catch (error) {
@@ -98,6 +126,7 @@ const AnnouncementAdminPage = () => {
   return (
     <div className="admin-page">
       <h1>公告管理</h1>
+      <AnnouncementSearchForm onSearch={handleSearch} />
       {/* 在沒有進行新增或編輯時顯示"新增公告" */}
       {!isCreating && !editId && (
         <button onClick={() => setIsCreating(true)}>新增公告</button>
@@ -106,7 +135,7 @@ const AnnouncementAdminPage = () => {
       {/* 顯示表單 */}
       {(isCreating || editId) && (
         <AnnouncementForm
-          initialData={editingData}
+          initialData={editingData || {}}
           mode={editId ? "edit" : "create"}
           onSubmit={handleFormSubmit}
         />
@@ -126,6 +155,7 @@ const AnnouncementAdminPage = () => {
           </li>
         ))}
       </ul>
+      <HomeButton />
     </div>
   );
 };
