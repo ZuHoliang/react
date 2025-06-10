@@ -138,6 +138,7 @@ const AnnouncementAdminPage = () => {
           initialData={editingData || {}}
           mode={editId ? "edit" : "create"}
           onSubmit={handleFormSubmit}
+          onCancel={resetForm}
         />
       )}
 

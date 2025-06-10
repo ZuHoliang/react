@@ -88,6 +88,9 @@ const Profile = () => {
         <p>
           <strong>使用者名稱:{user.username}</strong>
         </p>
+        <p className="user-role">
+          {user.role === 2 ? "管理者" : "一般員工"}
+        </p>
         <h3>修改個人資料</h3>
         {mode === "view" && (
           <div className="button-group">
