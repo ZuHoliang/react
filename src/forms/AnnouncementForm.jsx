@@ -7,14 +7,14 @@ const AnnouncementForm = ({ initialData, onSubmit, onCancel, mode }) => {
   const [active, setActive] = useState(true);
 
   //填上原始內容
-  useEffect(()=>{
+  useEffect(() => {
     const data = initialData || {};
     setTitle(data.title || "");
     setContent(data.content || "");
     setActive(
-      data.announcementActive === undefined?  true : data.announcementActive
+      data.announcementActive === undefined ?  true : data.announcementActive
     );
-  })
+  }, [initialData])
 
   const handleSubmit = async (e) => {
     e.preventDefault();

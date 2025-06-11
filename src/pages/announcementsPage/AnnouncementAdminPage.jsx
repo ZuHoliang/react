@@ -4,6 +4,7 @@ import AnnouncementSearchForm from "../../forms/AnnouncementSearchForm";
 import HomeButton from "../../components/HomeButton";
 import "./AnnouncementAdminPage.css";
 import "../../forms/AnnouncementSearchForm.css";
+import "../../forms/AnnouncementForm.css"
 
 const API_BASE = "http://localhost:8088/api/announcements";
 
