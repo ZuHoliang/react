@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import ScheduleCalendar from "../../components/schedule/ScheduleCalendar.jsx"
-import ShiftActionDialog from "../../components/schedule/ShiftActionDialog.jsx"
+import ScheduleCalendar from "../../components/schedule/ScheduleCalendar.jsx";
+import ShiftActionDialog from "../../components/schedule/ShiftActionDialog.jsx";
 import HomeButton from "../../components/HomeButton";
 
-const API_BASE = "http://localhost:8088/api/schedule"
+const API_BASE = "http://localhost:8088/api";
 
 const Schedule = () => {
   const today = new Date();
@@ -16,41 +16,46 @@ const Schedule = () => {
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [selfScheduled, setSelfScheduled] = useState(false);
 
-  useEffect(() =>{
+  useEffect(() => {
     fetchSchedules();
   }, [year, month]);
 
-  const fetchSchedules = async() => {
-    try{
-      const res = await fetch(`${API_BASE}/schedule/${year}/${month}`,{
+  const fetchSchedules = async () => {
+    try {
+      const res = await fetch(`${API_BASE}/schedule/${year}/${month}`, {
         method: "GET",
-        credentials: "include"
+        credentials: "include",
       });
       const data = await res.json();
-      if (res.ok){
+      if (res.ok) {
         setSchedules(data.data);
-      }else{
+      } else {
         alert(data.message || "載入班表失敗");
       }
-    }catch{
-      alert("連線失敗")
+    } catch {
+      alert("連線失敗");
     }
   };
 
+  //點選班表
   const handleShiftClick = (data, shiftType) => {
     setSelectedDate(data);
     setSelectedShift(shiftType);
-    const dayMembers = schedules.filter(s => s.workDate === date && s.shiftType === shiftType);
+    //目前排班的人
+    const dayMembers = schedules.filter(
+      (s) => s.workDate === data && s.shiftType === shiftType
+    );
+    //使用者是否已經排了該班次
     setSelectedMembers(dayMembers);
     const cert = JSON.parse(sessionStorage.getItem("userCert"));
-    setSelfScheduled(dayMembers.some(m => m.userId === cert?.userId));
+    setSelfScheduled(dayMembers.some((m) => m.userId === cert?.userId));
     setDialogOpen(true);
   };
 
   const handleMonthChange = (newYear, newMonth) => {
     setYear(newYear);
     setMonth(newMonth);
-  }
+  };
 
   const handleCloseDialog = () => {
     setDialogOpen(false);
@@ -59,93 +64,100 @@ const Schedule = () => {
     setSelectedShift("");
   };
 
-  //
+  //排班
   const handleAssign = async (date, shiftType) => {
-    try{
-      const res = await fetch(`${API_BASE}/schedule?date=${date}&shiftType=${shiftType}`,{
-        method: "POST",
-        credentials: "include"
-      });
+    try {
+      const res = await fetch(
+        `${API_BASE}/schedule?date=${date}&shiftType=${shiftType}`,
+        {
+          method: "POST",
+          credentials: "include",
+        }
+      );
       const data = await res.json();
-      if(res.ok){
+      if (res.ok) {
         alert("排班成功");
         handleCloseDialog();
         fetchSchedules();
-      }else{
+      } else {
         alert(data.message || "排班失敗");
       }
-    }catch{
-      alert("連線錯誤");
-    }
-  }
-
-  const handleCancel = async(date, shiftType) => {
-    try{
-      const res = await fetch(`${API_BASE}/schedule?date=${date}&shiftType=${shiftType}`,{
-        method:"DELETE",
-        credentials:"include"
-      });
-      const data = await res.json();
-      if(res.ok){
-        alert("取消排班");
-        handleCloseDialog();
-        fetchSchedules();
-      }else{
-        alert(data.message || "取消失敗");
-      }
-    }catch{
+    } catch {
       alert("連線錯誤");
     }
   };
 
-  const handleRequestSwap = async(date, shiftType, targetUserId, message) => {
-    try{
-      const res = await fetch(`${API_BASE}/swap`,{
-        method:"POST",
-        credentials:"include",
-        headers:{
-          "Content-Type":"application/json"
+  //取消排班
+  const handleCancel = async (date, shiftType) => {
+    try {
+      const res = await fetch(
+        `${API_BASE}/schedule?date=${date}&shiftType=${shiftType}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      if (res.ok) {
+        alert("取消排班");
+        handleCloseDialog();
+        fetchSchedules();
+      } else {
+        alert(data.message || "取消失敗");
+      }
+    } catch {
+      alert("連線錯誤");
+    }
+  };
+
+  //申請換班
+  const handleRequestSwap = async (date, shiftType, targetUserId, message) => {
+    try {
+      const res = await fetch(`${API_BASE}/swap`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          swapDate:date,
+          swapDate: date,
           swapToShift: shiftType,
           targetUserId,
-          swapMessage:message
-        })
+          swapMessage: message,
+        }),
       });
       const data = await res.json();
-      if(res.ok){
+      if (res.ok) {
         alert("已送出換班申請");
-      }else{
-        alert(data.message||"換班申請送出失敗");
+      } else {
+        alert(data.message || "換班申請送出失敗");
       }
-    }catch{
-      alert("連線錯誤")
+    } catch {
+      alert("連線錯誤");
     }
   };
 
   return (
     <div className="schedule-page">
-      
       <h2>班表</h2>
 
       <ScheduleCalendar
-      year={year}
-      month={month}
-      schedules={schedules}
-      onShiftClick={handleShiftClick}
-      onMonthChange={handleMonthChange}
+        year={year}
+        month={month}
+        schedules={schedules}
+        onShiftClick={handleShiftClick}
+        onMonthChange={handleMonthChange}
       />
 
       <ShiftActionDialog
-      open = {dialogOpen}
-      date = {selectedDate}
-      shiftType={selectedShift}
-      isSelfScheduled={selfScheduled}
-      onClose={handleCloseDialog}
-      onAssign={handleAssign}
-      onCancel={handleCancel}
-      onRequestSwap={handleRequestSwap}
+        open={dialogOpen}
+        date={selectedDate}
+        shiftType={selectedShift}
+        isSelfScheduled={selfScheduled}
+        onClose={handleCloseDialog}
+        onAssign={handleAssign}
+        onCancel={handleCancel}
+        onRequestSwap={handleRequestSwap}
       />
 
       <HomeButton />
