@@ -3,7 +3,7 @@ import ShiftMemberList from "./ShiftMemberList";
 // import "./ShiftActionDialog.css";
 
 //發送換班請求表單(彈窗)
-const ShiftActionDialog = ({ open, date, shiftType, members=[], isSelfScheduled, onClose, onAssign, onCancel, onRequestSwap}) => {
+const ShiftActionDialog = ({ open, date, shiftType, members, isSelfScheduled, onClose, onAssign, onCancel, onRequestSwap}) => {
 
     const [swapTargetId, setSwapTargetId] = useState(null);
     const [message, setmessage] = useState("");
