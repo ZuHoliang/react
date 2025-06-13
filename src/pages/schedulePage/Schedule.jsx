@@ -153,6 +153,7 @@ const Schedule = () => {
         open={dialogOpen}
         date={selectedDate}
         shiftType={selectedShift}
+        members={selectedMembers}
         isSelfScheduled={selfScheduled}
         onClose={handleCloseDialog}
         onAssign={handleAssign}

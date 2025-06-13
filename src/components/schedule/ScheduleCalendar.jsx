@@ -23,7 +23,7 @@ const ScheduleCalendar = ({year, month, schedules, onShiftClick, onMonthChange})
             <div className="calendar-grid">
                 {days.map((date) => {
                     const formatted = date.toISOString().split("T")[0]; //將日期轉成yyyy-mm-dd(ISO標準格式)
-                    const daySchedules= schedules.filter(s => s.workWate === formatted);
+                    const daySchedules= schedules.filter(s => s.workDate === formatted);
                     return(
                         <ScheduleCell
                         key={formatted}

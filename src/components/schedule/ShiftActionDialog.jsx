@@ -6,7 +6,7 @@ import ShiftMemberList from "./ShiftMemberList";
 const ShiftActionDialog = ({ open, date, shiftType, members, isSelfScheduled, onClose, onAssign, onCancel, onRequestSwap}) => {
 
     const [swapTargetId, setSwapTargetId] = useState(null);
-    const [message, setmessage] = useState("");
+    const [message, setMessage] = useState("");
 
     if(!open) return null;
 
@@ -35,7 +35,7 @@ const ShiftActionDialog = ({ open, date, shiftType, members, isSelfScheduled, on
             <textarea
             placeholder="留言"
             value={message}
-            onChange={(e) => setmessage(e.target.value)}
+            onChange={(e) => setMessage(e.target.value)}
             />
 
             <div className="dialog-actions">

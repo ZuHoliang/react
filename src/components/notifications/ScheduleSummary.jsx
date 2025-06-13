@@ -30,6 +30,7 @@ const ScheduleSummary = () => {
     const days = [];
     const date = new Date(year, month - 1, 1);
     while (date.getMonth() === month - 1) {
+      days.push(new Date(date));
       date.setDate(date.getDate() + 1);
     }
     return days;
@@ -48,7 +49,7 @@ const ScheduleSummary = () => {
       (s) => s.workDate === date && s.shiftType === type
     );
     if (!match) return null;
-    const futureClass = isFuture(date) ? "futer" : "";
+    const futureClass = isFuture(date) ? "future" : "";
     return (
       <div className={`shift ${type.toLowerCase()}${futureClass}`}>
         {type === "MORNING" ? "早班" : "晚班"};
