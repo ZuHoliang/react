@@ -37,3 +37,5 @@ const ScheduleCalendar = ({year, month, schedules, onShiftClick, onMonthChange})
         </div>
     )
 }
+
+export default ScheduleCalendar;

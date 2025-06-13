@@ -1,15 +1,14 @@
 import React, {useState, useEffect} from "react";
 import ShiftMemberList from "./ShiftMemberList";
-import { data } from "react-router-dom";
 // import "./ShiftActionDialog.css";
 
 //發送換班請求表單(彈窗)
-const ShiftActionDialog = ({ open, date, shiftType, members, isSelfScheduled, onClose, onAssign, onCancel, onRequestSwap}) => {
+const ShiftActionDialog = ({ open, date, shiftType, members=[], isSelfScheduled, onClose, onAssign, onCancel, onRequestSwap}) => {
 
     const [swapTargetId, setSwapTargetId] = useState(null);
     const [message, setmessage] = useState("");
 
-    if(!poen) return null;
+    if(!open) return null;
 
     const handleAssign = () => {
         onAssign(date, shiftType);
@@ -40,7 +39,7 @@ const ShiftActionDialog = ({ open, date, shiftType, members, isSelfScheduled, on
             />
 
             <div className="dialog-actions">
-                {!isSelfScheduled && members.length <2 && (
+                {!isSelfScheduled && members.length<2 && (
                     <button onClick={handleAssign}>排班</button>
                 )}
 

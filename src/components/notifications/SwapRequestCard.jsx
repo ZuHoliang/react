@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import SwapReplyDialog from "./SwapReplyDialog";
-import "./SwapRequestCard.css";
+// import "./SwapRequestCard.css";
 
 const SwapRequestCard = ({ request, isReceived, onReply, onCancel }) => {
   const [replyOpen, setReplyOpen] = useState(false);
