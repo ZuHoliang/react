@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-// import "./SwapReplyDialog.css"
+import "./SwapReplyDialog.css";
 
 const SwapReplyDialog = ({ onApprove, onReject, onClose }) => {
   const [message, setMessage] = useState("");
@@ -14,7 +14,7 @@ const SwapReplyDialog = ({ onApprove, onReject, onClose }) => {
           onChange={(e) => setMessage(e.target.value)}
         />
         <div className="dialog-actions">
-          <button cnClick={() => onApprove(message)}>同意</button>
+          <button onClick={() => onApprove(message)}>同意</button>
           <button onClick={() => onReject(message)}>拒絕</button>
           <button onClick={onClose}>取消</button>
         </div>

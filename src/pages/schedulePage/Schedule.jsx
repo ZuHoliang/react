@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "../../contexts/AuthContext";
 import ScheduleCalendar from "../../components/schedule/ScheduleCalendar.jsx";
 import ShiftActionDialog from "../../components/schedule/ShiftActionDialog.jsx";
 import HomeButton from "../../components/HomeButton";
+import useAuthFetch from "../../utils/useAuthFetch";
 
 const API_BASE = "http://localhost:8088/api";
 
@@ -15,6 +17,8 @@ const Schedule = () => {
   const [selectedShift, setSelectedShift] = useState("");
   const [selectedMembers, setSelectedMembers] = useState([]);
   const [selfScheduled, setSelfScheduled] = useState(false);
+  const { user } = useContext(AuthContext);
+  const authFetch = useAuthFetch();
 
   useEffect(() => {
     fetchSchedules();
@@ -22,7 +26,7 @@ const Schedule = () => {
 
   const fetchSchedules = async () => {
     try {
-      const res = await fetch(`${API_BASE}/schedule/${year}/${month}`, {
+      const res = await authFetch(`${API_BASE}/schedule/${year}/${month}`, {
         method: "GET",
         credentials: "include",
       });
@@ -47,8 +51,7 @@ const Schedule = () => {
     );
     //使用者是否已經排了該班次
     setSelectedMembers(dayMembers);
-    const cert = JSON.parse(sessionStorage.getItem("userCert"));
-    setSelfScheduled(dayMembers.some((m) => m.userId === cert?.userId));
+    setSelfScheduled(dayMembers.some((m) => m.userId === user?.userId));
     setDialogOpen(true);
   };
 
@@ -67,7 +70,7 @@ const Schedule = () => {
   //排班
   const handleAssign = async (date, shiftType) => {
     try {
-      const res = await fetch(
+      const res = await authFetch(
         `${API_BASE}/schedule?date=${date}&shiftType=${shiftType}`,
         {
           method: "POST",
@@ -90,7 +93,7 @@ const Schedule = () => {
   //取消排班
   const handleCancel = async (date, shiftType) => {
     try {
-      const res = await fetch(
+      const res = await authFetch(
         `${API_BASE}/schedule?date=${date}&shiftType=${shiftType}`,
         {
           method: "DELETE",
@@ -113,7 +116,7 @@ const Schedule = () => {
   //申請換班
   const handleRequestSwap = async (date, shiftType, targetUserId, message) => {
     try {
-      const res = await fetch(`${API_BASE}/swap`, {
+      const res = await authFetch(`${API_BASE}/swap`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -129,6 +132,7 @@ const Schedule = () => {
       const data = await res.json();
       if (res.ok) {
         alert("已送出換班申請");
+        handleCloseDialog();
       } else {
         alert(data.message || "換班申請送出失敗");
       }

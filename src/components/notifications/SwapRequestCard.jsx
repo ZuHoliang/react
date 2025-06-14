@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from "react";
 import SwapReplyDialog from "./SwapReplyDialog";
-// import "./SwapRequestCard.css";
+import "./SwapRequestCard.css";
 
+//顯示單筆換班通知
 const SwapRequestCard = ({ request, isReceived, onReply, onCancel }) => {
   const [replyOpen, setReplyOpen] = useState(false);
 
+  //送出同意
   const handleApprove = (message) => {
-    onReply(request.requestId, true, message);
+    onReply(request.shiftSwapId, true, message);
+    setReplyOpen(false);
+  };
+
+  //送出拒絕
+  const handleReject = (message) => {
+    onReply(request.shiftSwapId, false, message);
     setReplyOpen(false);
   };
 
@@ -15,7 +23,7 @@ const SwapRequestCard = ({ request, isReceived, onReply, onCancel }) => {
       <div className="card-content">
         <div>
           <strong>{isReceived ? "申請人" : "被申請人"} :</strong>
-          {isReceived ? request.requesterName : request.targetName}
+          {isReceived ? request.requestUsername : request.targetUsername}
         </div>
         <div>
           <strong>班別:</strong>
@@ -29,13 +37,16 @@ const SwapRequestCard = ({ request, isReceived, onReply, onCancel }) => {
           </div>
         )}
       </div>
+      {/* 是否是接收方 */}
       {isReceived ? (
         <div className="card-actions">
           <button onClick={() => setReplyOpen(true)}>同意 / 拒絕 </button>
         </div>
       ) : (
         <div className="card-actions">
-          <button onClick={() => onCancel(request.requestId)}>取消申請</button>
+          <button onClick={() => onCancel(request.shiftSwapId)}>
+            取消申請
+          </button>
         </div>
       )}
 
@@ -43,7 +54,7 @@ const SwapRequestCard = ({ request, isReceived, onReply, onCancel }) => {
         <SwapReplyDialog
           onApprove={handleApprove}
           onReject={handleReject}
-          onClose={() => setReplyOpen}
+          onClose={() => setReplyOpen(false)}
         />
       )}
     </div>

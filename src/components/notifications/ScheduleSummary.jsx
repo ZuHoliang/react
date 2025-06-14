@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
+import { formatDate } from "../../utils/formatDate";
 import "./ScheduleSummary.css";
 
 const API_BASE = "http://localhost:8088/api";
 
-const ScheduleSummary = () => {
+const ScheduleSummary = ({ refreshKey }) => {
   const today = new Date();
   const [schedules, setSchedules] = useState([]);
   const [year] = useState(today.getFullYear());
@@ -23,7 +24,7 @@ const ScheduleSummary = () => {
         }
       })
       .catch(() => alert("連線錯誤"));
-  }, [year, month]);
+  }, [year, month, refreshKey]);
 
   //計算當月日期
   const getDaysInMonth = (year, month) => {
@@ -49,11 +50,12 @@ const ScheduleSummary = () => {
       (s) => s.workDate === date && s.shiftType === type
     );
     if (!match) return null;
-    const futureClass = isFuture(date) ? "future" : "";
+    const future = isFuture(date);
+    const shiftClass = `${type.toLowerCase()} shift ${
+      future ? "future" : "past"
+    }`;
     return (
-      <div className={`shift ${type.toLowerCase()}${futureClass}`}>
-        {type === "MORNING" ? "早班" : "晚班"};
-      </div>
+      <div className={shiftClass}>{type === "MORNING" ? "早班" : "晚班"}</div>
     );
   };
 
@@ -64,9 +66,14 @@ const ScheduleSummary = () => {
       <h3>我的排班</h3>
       <div className="summary-grid">
         {days.map((d) => {
-          const dateStr = d.toISOString().split("T")[0];
+          const dateStr = formatDate(d);
           return (
-            <div key={dateStr} className="summary-cell">
+            <div
+              key={dateStr}
+              className={`summary-cell ${
+                isFuture(dateStr) ? "future-cell" : ""
+              }`}
+            >
               <div className="date-label">{d.getDate()}</div>
               {renderShiftText(dateStr, "MORNING")}
               {renderShiftText(dateStr, "EVENING")}
