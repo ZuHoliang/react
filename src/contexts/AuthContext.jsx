@@ -1,6 +1,5 @@
-import React, { createContext, useState, useEffect, Children } from "react";
-
-const AuthContext = createContext();
+import React, { useState, useEffect } from "react";
+import AuthContext from "./AuthContext.js";
 
 const API_BASE = "http://localhost:8088/api";
 
@@ -35,12 +34,13 @@ const AuthProvider = ({ children }) => {
   };
 
   //登入
-  const login = async (accountId, password, remerberMe = false) => {
+  const login = async (accountId, password, rememberMe = false) => {
     try {
       // setLoading(true);
       const formData = new FormData();
       formData.append("accountId", accountId);
       formData.append("password", password);
+      formData.append("rememberMe", rememberMe);
 
       const response = await fetch(`${API_BASE}/auth/login`, {
         method: "POST",
@@ -111,4 +111,4 @@ const AuthProvider = ({ children }) => {
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
-export { AuthContext, AuthProvider };
+export default AuthProvider;

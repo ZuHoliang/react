@@ -62,10 +62,12 @@ const ScheduleSummary = ({ refreshKey }) => {
 
   const days = getDaysInMonth(year, month);
 
+  //取得日期偏移
   const startOffset = (() => {
     const first = new Date(year, month - 1, 1);
-    return (first.getDate() + 6) % 7;
+    return (first.getDay() + 6) % 7;
   })();
+  //在第一天前面塞空值
   const leading = Array(startOffset).fill(null);
   const lastDate = days[days.length - 1];
   const endOffset = (() => {
@@ -73,6 +75,7 @@ const ScheduleSummary = ({ refreshKey }) => {
     return (7 - lastDayIndex - 1) % 7;
   })();
 
+  //最後一天
   const trailing = Array(endOffset).fill(null);
   const calendarDates = [...leading, ...days, ...trailing];
 

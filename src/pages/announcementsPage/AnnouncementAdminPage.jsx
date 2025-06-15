@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import AnnouncementForm from "../../forms/AnnouncementForm";
 import AnnouncementSearchForm from "../../forms/AnnouncementSearchForm";
 import HomeButton from "../../components/HomeButton";
+import useAuthFetch from "../../utils/useAuthFetch";
 import "./AnnouncementAdminPage.css";
 import "../../forms/AnnouncementSearchForm.css";
-import "../../forms/AnnouncementForm.css"
+import "../../forms/AnnouncementForm.css";
 
 const API_BASE = "http://localhost:8088/api/announcements";
 
@@ -13,17 +14,22 @@ const AnnouncementAdminPage = () => {
   const [editId, setEditId] = useState(null);
   const [editingData, setEditingData] = useState(null);
   const [isCreating, setIsCreating] = useState(false);
+  const [page, setpage] = useState(0);
+  const authFetch = useAuthFetch();
 
-  const fetchAnnouncements = async (query = "") => {
+  const fetchAnnouncements = async (p = 0, query = "") => {
     try {
-      const url = query ? `${API_BASE}${query}` : API_BASE;
-      const res = await fetch(url, {
+      const url = query
+        ? `${API_BASE}${query}&page=${p}`
+        : `${API_BASE}/page?page=${p}`;
+      const res = await authFetch(url, {
         method: "GET",
         credentials: "include",
       });
       if (!res.ok) throw new Error("載入失敗");
       const data = await res.json();
       setAnnouncements(data);
+      setpage(p);
     } catch (err) {
       console.error("公告載入錯誤：", err);
       alert("無法載入公告資料");
@@ -31,13 +37,13 @@ const AnnouncementAdminPage = () => {
   };
 
   useEffect(() => {
-    fetchAnnouncements();
+    fetchAnnouncements(0);
   }, []);
 
   // 搜尋公告
   const handleSearch = (keyword, startDate, endDate) => {
     const params = new URLSearchParams({ keyword, startDate, endDate });
-    return fetchAnnouncements(`/search?${params.toString()}`);
+    return fetchAnnouncements(0, `/search?${params.toString()}`);
   };
 
   //編輯公告
@@ -51,15 +57,13 @@ const AnnouncementAdminPage = () => {
   const handleDelete = async (id) => {
     if (window.confirm("確定要刪除這則公告嗎?")) {
       try {
-        const res = await fetch(`${API_BASE}/admin/${id}`, {
+        const res = await authFetch(`${API_BASE}/admin/${id}`, {
           method: "DELETE",
           credentials: "include",
         });
 
         if (!res.ok) throw new Error("刪除失敗");
         alert("公告刪除成功");
-        window.location.reload();
-
         await fetchAnnouncements();
       } catch (err) {
         console.error("刪除公告失敗：", err);
@@ -74,7 +78,7 @@ const AnnouncementAdminPage = () => {
     const method = editId ? "PUT" : "POST";
 
     try {
-      const response = await fetch(url, {
+      const response = await authFetch(url, {
         method,
         credentials: "include",
         headers: { "Content-Type": "application/json" },
@@ -85,8 +89,6 @@ const AnnouncementAdminPage = () => {
         throw new Error("伺服器錯誤!");
       }
 
-      await fetchAnnouncements();
-
       let newItem = await response.json();
 
       //更新公告
@@ -95,7 +97,7 @@ const AnnouncementAdminPage = () => {
         editingData &&
         editingData.announcementActive !== data.announcementActive
       ) {
-        const activeChage = await fetch(
+        const activeChage = await authFetch(
           `${API_BASE}/admin/${editId}/active?active=${data.announcementActive}`,
           {
             method: "PUT",
@@ -107,9 +109,9 @@ const AnnouncementAdminPage = () => {
       }
 
       alert(`公告已成功${editId ? "編輯" : "新增"}`);
-      window.location.reload();
 
       resetForm();
+      await fetchAnnouncements();
     } catch (error) {
       console.error("送出失敗：", error);
       alert("發生錯誤，請稍後再試");
@@ -130,7 +132,25 @@ const AnnouncementAdminPage = () => {
       <AnnouncementSearchForm onSearch={handleSearch} />
       {/* 在沒有進行新增或編輯時顯示"新增公告" */}
       {!isCreating && !editId && (
-        <button onClick={() => setIsCreating(true)}>新增公告</button>
+        <div className="control-bar">
+          <button onClick={() => setIsCreating(true)}>新增公告</button>
+          {/* 換頁 */}
+          <div className="page-controls">
+            <button
+              disabled={page === 0}
+              onClick={() => fetchAnnouncements(page - 1)}
+            >
+              上一頁
+            </button>
+            <span>第 {page + 1} 頁</span>
+            <button
+              disabled={announcements.length < 10}
+              onClick={() => fetchAnnouncements(page + 1)}
+            >
+              下一頁
+            </button>
+          </div>
+        </div>
       )}
 
       {/* 顯示表單 */}
@@ -157,6 +177,7 @@ const AnnouncementAdminPage = () => {
           </li>
         ))}
       </ul>
+
       <HomeButton />
     </div>
   );
