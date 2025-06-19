@@ -61,7 +61,7 @@ const ShiftActionDialog = ({
           onChange={(e) => setMessage(e.target.value)}
         />
 
-        {error && <div className="field-error">{error}</div> }
+        {error && <div className="field-error">{error}</div>}
 
         <div className="dialog-actions">
           {!isSelfScheduled && members.length < 2 && (

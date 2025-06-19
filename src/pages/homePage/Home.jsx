@@ -4,7 +4,7 @@ import NavButton from "../../components/NavButton";
 import LoginForm from "../../forms/LoginForm";
 import LatestAnnouncements from "../../components/LatestAnnouncements";
 import { connectSocket, disconnectSocket } from "../../utils/socket";
-import useAuthFetch from "../../utils/useAuthFetch"
+import useAuthFetch from "../../utils/useAuthFetch";
 import "./Home.css";
 
 const API_BASE = "http://localhost:8088/api";
@@ -23,7 +23,6 @@ const Home = () => {
   // 判斷用戶權限
   const isAdmin = user?.role === 2; //role=2 是 ADMIN
   const isUser = user?.role === 1 || user?.role === 2; // role=1 是 USER，role=2 是 ADMIN
-  
 
   useEffect(() => {
     if (!user) {
@@ -81,37 +80,42 @@ const Home = () => {
         setUsernameCheck(!!data.usernameCheck);
         setAnnouncementCheck(!!data.announcementCheck);
         setMessageCheck(!!data.messageCheck);
-      } catch(err) {
+      } catch (err) {
         setModError("無法載入設定");
       }
     };
     fetchConfig();
   }, [authFetch, isAdmin]);
 
-  const handleSaveModeration = async () => {
+  const updateModeration = async (field, value) => {
     setModSaving(true);
     setModError("");
-    try{
-      const res = await authFetch(`${API_BASE}/admin/moderation`,{
+    const payload = {
+      usernameCheck,
+      messageCheck,
+      announcementCheck,
+      [field]: value,
+    };
+    try {
+      const res = await authFetch(`${API_BASE}/admin/moderation`, {
         method: "PUT",
         credentials: "include",
-        headers:{ "Content-Type": "application/json" },
-        body: JSON.stringify({
-          usernameCheck,
-          messageCheck,
-          announcementCheck,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
-      const data = await res.json();
-      if(!res.ok || data.status !== 200){
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
         throw new Error(data.message || "更新失敗");
       }
-    }catch(err){
+      setUsernameCheck(!!data.usernameCheck);
+      setAnnouncementCheck(!!data.announcementCheck);
+      setMessageCheck(!!data.messageCheck);
+    } catch (err) {
       setModError(err.message || "更新失敗");
     } finally {
       setModSaving(false);
     }
-  };  
+  };
 
   // if (loading) {
   //   return <div className="loading">載入中...</div>;
@@ -157,43 +161,43 @@ const Home = () => {
                       <input
                         type="checkbox"
                         checked={usernameCheck}
-                        onChange={(e) => setUsernameCheck(e.target.checked)}
+                        onChange={(e) => {
+                          const value = e.target.checked;
+                          setUsernameCheck(value);
+                          updateModeration("usernameCheck", value);
+                        }}
                       />
-                      啟用帳號審核
+                      帳號審核
                     </label>
                     <label>
                       <input
-                      type="checkbox"
-                      checked={announcementCheck}
-                      onChange={(e) => setAnnouncementCheck(e.target.checked)}
-                      
+                        type="checkbox"
+                        checked={announcementCheck}
+                        onChange={(e) => {
+                          const value = e.target.checked;
+                          setAnnouncementCheck(value);
+                          updateModeration("announcementCheck", value);
+                        }}
                       />
-                      啟用公告審核
+                      公告審核
                     </label>
                     <label>
                       <input
-                      type="checkbox"
-                      checked={messageCheck}
-                      onChange={(e) => setMessageCheck(e.target.checked)}
+                        type="checkbox"
+                        checked={messageCheck}
+                        onChange={(e) => {
+                          const value = e.target.checked;
+                          setMessageCheck(value);
+                          updateModeration("messageCheck", value);
+                        }}
                       />
-                      啟用留言審核
+                      留言審核
                     </label>
-                    <button onClick={handleSaveModeration} disabled = {modSaving}>
 
-
-
-
-
-
-
-
-                    
-                      {modSaving ? "儲存中..." : "儲存"}
-                    </button>
                     {modError && (
-                       <p style={{ color: "red" }} className="error-text">
+                      <p style={{ color: "red" }} className="error-text">
                         {modError}
-                        </p>
+                      </p>
                     )}
                   </div>
                 </>
@@ -208,6 +212,6 @@ const Home = () => {
       </div>
     </div>
   );
-}
+};
 
 export default Home;
