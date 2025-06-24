@@ -1,0 +1,30 @@
+https://github.com/LyndonYeh/gitSkill.git
+
+https://drive.google.com/drive/folders/1VOHuw6osnH6q4jgEeGC_H8wdbXyzT72F
+
+Spring AI
+
+https://cdn.spring.io/spring-tools/release/TOOLS/sts4/update/4.29.1.RELEASE/e4.35/
+
+https://agniesz.notion.site/Junior-Java-213761e4a142801cab89eedf30460195
+
+
+https://docs.google.com/document/d/1yb3n3D8VB7eKLusR4sZda7PdUpz5g8A5/edit?usp=sharing&ouid=108140218759432717181&rtpof=true&sd=true
+ 
+https://docs.google.com/document/d/1SVojPSS-97BLR6-i6Yq5hjZKBE1L3ziC/edit?usp=drive_link&rtpof=true&sd=true
+ 
+
+
+
+
+
+
+git fetch origin
+git reset --hard origin/master main
+
+
+為什麼@Autowired自己?為什麼文字審核仍然引用聊天?
+
+equals()、hashCode()、Set、Map 
+
+
